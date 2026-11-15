@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "halo-jira"
+version = "0.1.0"
+description = "HALO Jira Cloud integration through REST, MCP, and workflow simulation"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "httpx==0.28.1",
+  "pydantic==2.14.3",
+  "pydantic-settings==2.16.3",
+  "fastapi==0.163.1",
+  "uvicorn==0.54.0",
+  "mcp==2.3.0",
+]
+
+[dependency-groups]
+dev = ["pytest==9.2.0", "pytest-asyncio==1.5.0", "ruff==0.17.5"]
+
+[project.scripts]
+halo = "halo.cli:main"
+halo-mcp = "halo.mcp_server:main"
+halo-demo = "halo.demo:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/halo"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
+
+[tool.uv]
+exclude-newer = "2026-11-17T00:00:00Z"

@@ -2,7 +2,10 @@
 
 Read `docs/PROJECT_BRIEF.md`, `TASKS.md`, and `DECISIONS.md` before making changes.
 
-- Start with Phase 1, Step 1 only; implement small, working increments.
+- The original brief starts with Phase 1, Step 1. The user subsequently authorized
+  an unattended end-to-end local implementation. That build may proceed across
+  phases with simulator validation; do not label untested live Jira as complete.
+- For further work, implement small, explained increments.
 - Complete and validate each phase before starting the next; obtain the user's
   approval before advancing to another major phase.
 - Inspect existing files and explain intended changes before editing.
@@ -21,4 +24,5 @@ Read `docs/PROJECT_BRIEF.md`, `TASKS.md`, and `DECISIONS.md` before making chang
 - Use a dedicated Jira test project. Obtain explicit approval before destructive
   or bulk Jira operations; do not create large numbers of test tickets.
 - Maintain `TASKS.md` and document material decisions in `DECISIONS.md`.
-- Do not implement FastAPI, MCP, workflows, or enterprise hardening ahead of phase.
+- REST, MCP, workflows, and baseline hardening now have local implementations.
+  Review `docs/HANDOFF.md` for real-account and enterprise work still outstanding.

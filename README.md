@@ -1,54 +1,89 @@
 # HALO
 
-**Harness for Agentic Lifecycle Orchestration**
+**Harness for Agentic Lifecycle Orchestration** — a framework-independent Jira Cloud
+integration with a shared Python service, FastAPI REST adapter, official MCP SDK
+server, and a small workflow simulator.
 
-An incremental, framework-independent Jira Cloud integration project for HALO,
-covering a reusable Python client, REST and MCP adapters, and workflow simulation.
+**Status:** local end-to-end REST and MCP flows pass against a Jira simulator.
+Real Jira is **not yet verified** because no account credentials are configured.
+GitHub creation was denied by the connected app; this repository is local.
+See [the handoff](docs/HANDOFF.md) for results and remaining steps.
 
-## Current status
+## Run the complete local demo
 
-Repository initialized. Application implementation has not started.
-The first development task is **Phase 1, Step 1: environment setup**.
-No Jira connection or issue creation has been attempted.
+Requires Python 3.12 or 3.13 and [uv](https://docs.astral.sh/uv/).
+`uv sync` installs the versions in the committed lockfile into `.venv`.
+`halo demo` starts temporary loopback HTTP servers and an MCP subprocess, runs the
+workflow through both adapters, prints the results, and stops those processes.
+It requires no Jira account and does not contact real Jira.
 
-## Planned architecture
-
-```text
-HALO workflow simulator
-        |           |
-     FastAPI     MCP server
-        |           |
-        Jira service
-             |
-        Jira HTTP client
-             |
-     Jira Cloud REST API v3
+```bash
+uv sync --frozen
+uv run --frozen halo demo --report reports/demo.json
 ```
 
-REST and MCP will share the same Jira operations. Business logic will remain
-independent of LLMs and orchestration frameworks.
+Expect both routes to report `"state": "completed"`, ten discovered MCP tools,
+and `"live_jira_verified": false`. The demo explicitly approves simulated runs;
+live workflow commands pause until you run a separate approval command.
 
-## Repository guide
+## Connect your real Jira account
 
-- `docs/PROJECT_BRIEF.md`: original project requirements and teaching approach.
-- `AGENTS.md`: instructions for contributors and coding assistants.
-- `TASKS.md`: phased progress tracker.
-- `DECISIONS.md`: architectural decisions and implementation boundaries.
-- `.env.example`: configuration names with placeholder values only.
-- `.gitignore`: excludes credentials, virtual environments, and generated files.
+Read [the setup guide](docs/SETUP.md) before configuring credentials or issuing writes.
+Copy `.env.example` to `.env` and edit it locally. Never paste secrets into chat.
+`halo check` reads your current Jira user and the first page of visible projects.
 
-## Next development step
+```bash
+uv run --frozen halo check
+```
 
-Inspect the target development system and verify supported Python and dependency
-versions against official documentation before installing packages. The preferred
-stack is Python, uv, HTTPX, and later Pydantic v2, FastAPI, the official Python MCP
-SDK, pytest, and Ruff. No package versions have been selected or verified yet.
+Start REST locally with `uv run --frozen halo serve`; open
+`http://127.0.0.1:8000/docs` and use **Authorize** with your local `HALO_API_KEY`.
+Start local MCP with `uv run --frozen halo mcp` from a compatible host, with this
+repository as its working directory. MCP communicates over stdio; it is not a web page.
 
-For local Jira authentication, copy `.env.example` to `.env` and edit it locally.
-Never paste API tokens into chat or commit them. The template is documentation;
-Python will not load `.env` automatically until configuration loading is implemented.
-Use a dedicated Jira development project and least-privilege credentials.
+## Architecture
 
-The initial milestone is to authenticate, list Jira projects, and create one test
-issue. Complete and validate each phase before moving to the next, with approval
-at major phase boundaries.
+```text
+HALO workflow (execution ID + local SQLite state)
+                   |
+             REST or MCP client
+              /           \
+      FastAPI adapter   MCP stdio adapter
+              \           /
+              Shared JiraService
+                     |
+               HTTPX JiraClient
+                     |
+            Jira Cloud REST API v3
+```
+
+Descriptions and comments use Atlassian Document Format. Search uses the enhanced
+`/rest/api/3/search/jql` endpoint and supports page tokens. Workflow statuses are
+configurable and resolved through the issue's currently allowed transitions.
+
+## Checks
+
+`pytest` includes unit, credential-safety, REST authorization, workflow recovery,
+and real local HTTP/MCP transport tests. It creates no real Jira tickets.
+
+```bash
+uv run --frozen pytest -q
+uv run --frozen ruff check .
+uv run --frozen ruff format --check .
+uv pip check
+```
+
+## Documentation
+
+- [Handoff and remaining work](docs/HANDOFF.md)
+- [Setup, commands, expected output, and troubleshooting](docs/SETUP.md)
+- [Python and API learning guide](docs/LEARNING_GUIDE.md)
+- [Module-by-module explanation](docs/MODULES.md)
+- [Verified environment and package versions](docs/ENVIRONMENT.md)
+- [Security boundaries and recovery](docs/SECURITY.md)
+- [Official Atlassian MCP alternative](docs/ROVO_EVALUATION.md)
+- [Original brief](docs/PROJECT_BRIEF.md), [progress](TASKS.md), and [decisions](DECISIONS.md)
+
+This is a tested local integration foundation. Enterprise identity, distributed
+workflow guarantees, hosted MCP authentication, and production deployment require
+further work. No license has been selected for the client's project.

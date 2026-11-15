@@ -1,0 +1,26 @@
+name: HALO checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install package manager
+        run: python -m pip install uv==0.13.6
+      - name: Install locked dependencies
+        run: uv sync --frozen
+      - name: Lint and format
+        run: |
+          uv run --frozen ruff check .
+          uv run --frozen ruff format --check .
+      - name: Unit, security, and local end-to-end tests
+        run: uv run --frozen pytest -q
+      - name: Validate dependencies
+        run: uv pip check
