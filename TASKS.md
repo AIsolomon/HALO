@@ -10,9 +10,8 @@ is still blocked**, so the original phase acceptance criteria are not all met.
 - [x] Inspect cloud environment, verify official references and available versions.
 - [x] Lock compatible dependencies; install a project virtual environment.
 - [x] Add safe configuration template, contributor instructions, and teaching notes.
-- [ ] Publish to the user-created public `AIsolomon/HALO` repository on `main`.
-      Git push returns 403 and the GitHub connector rejects writes with
-      `Resource not accessible by integration`. Enable app access to HALO first.
+- [x] Publish the complete local history to public `AIsolomon/HALO` on `main`.
+      The user enabled repository access in GitHub; a normal push then succeeded.
 - [x] Prepare laptop cloning, VS Code, simulator, test, and API-key instructions.
 - [ ] Configure actual Jira Cloud credentials locally: none are available here.
 

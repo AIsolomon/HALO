@@ -112,3 +112,13 @@ push permission but does not establish the app's content-write authorization.
 Nothing has been published. Keep the requested origin, retain all local commits,
 and wait for HALO to be included in the connected app's repository access before
 retrying. Public visibility is not write authorization.
+
+
+## 016 — GitHub access enabled and initial push verified
+
+After the user enabled repository access in GitHub, `git push -u origin main`
+succeeded on 16 November 2026, publishing the existing local commit history to
+`AIsolomon/HALO`. No Codex connection refresh was required. Keep `origin/main` as
+the upstream, remove obsolete publication-blocked text from active setup guides,
+and use GitHub Actions plus remote SHA checks to verify the published revision.
+The historical permission failures above are retained as a record, not a current blocker.
