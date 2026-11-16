@@ -25,7 +25,8 @@ def test_startup_failure_preserves_diagnostics_and_stops_server(tmp_path, monkey
     # On Windows this fails if a surviving child still owns the inherited handle.
     (tmp_path / "servers.log").unlink()
     url, auth = urls[0]
-    with pytest.raises(httpx.ConnectError):
+    # A closed loopback port can time out on Windows instead of refusing immediately.
+    with pytest.raises((httpx.ConnectError, httpx.ConnectTimeout)):
         httpx.get(url, auth=auth, timeout=1, trust_env=False)
 
 
@@ -36,5 +37,5 @@ def test_workflow_failure_closes_log_and_both_servers(tmp_path):
             raise ValueError("Controlled workflow failure")
     (tmp_path / "servers.log").unlink()
     for url in (f"{api_url}/health", f"{jira_url}/rest/api/3/myself"):
-        with pytest.raises(httpx.ConnectError):
+        with pytest.raises((httpx.ConnectError, httpx.ConnectTimeout)):
             httpx.get(url, timeout=1, trust_env=False)
