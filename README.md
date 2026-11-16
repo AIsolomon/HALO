@@ -6,8 +6,11 @@ server, and a small workflow simulator.
 
 **Status:** local end-to-end REST and MCP flows pass against a Jira simulator.
 Real Jira is **not yet verified** because no account credentials are configured.
-GitHub creation was denied by the connected app; this repository is local.
+The target GitHub repository is `solbaviangel/HALO`. Publishing is pending because
+the currently connected account cannot access it.
 See [the handoff](docs/HANDOFF.md) for results and remaining steps.
+
+For your laptop, start with [the VS Code setup guide](docs/LOCAL_VSCODE.md).
 
 ## Run the complete local demo
 

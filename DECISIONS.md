@@ -80,3 +80,13 @@ cloud's HTTPS interception requires a certificate bundle during builds. Verifica
 used a temporary Dockerfile and BuildKit secret mounts for pip/uv; TLS verification
 was not disabled and the environment's CA was not copied into the image. The
 container runs as UID 10001. Production trust and identity remain deployment concerns.
+
+
+## 013 — User-provided GitHub destination and local setup
+
+The user supplied `https://github.com/solbaviangel/HALO` and authorized transferring
+the source there. Use that exact destination, preserving any existing remote
+history and visibility. The connected `AIsolomon` account receives 404 from the
+GitHub connector, CLI API, and Git transport. Add the requested origin locally;
+publication remains pending account/app access. Prepare a VS Code guide so the
+user can clone, run the credential-free simulator, and test before configuring Jira.

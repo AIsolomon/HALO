@@ -222,17 +222,29 @@ docker run --rm --env-file .env -p 127.0.0.1:8000:8000 halo-jira:local
 | Port in use | Stop the previous server or use `halo serve --port 8001`. |
 | uv cache read-only in cloud | Use `UV_CACHE_DIR=/workspace/work/uv-cache` as a command prefix. |
 
-## 10. Publish to GitHub when permission is available
+## 10. Push to the requested GitHub repository
 
-The connected app refused repository creation with `Resource not accessible by
-integration (createRepository)`. No remote was created and no source was pushed.
-Once your GitHub account has authorized repository creation, this command creates
-a private HALO repository and pushes the existing commit history:
+The user supplied `https://github.com/solbaviangel/HALO`. The cloud checkout's
+`origin` points there. The connected `AIsolomon` account currently receives 404
+from both the API and Git transport, so no push has succeeded. A private repository
+can be hidden behind this response; verify account/app access instead of assuming
+that the repository is absent. Do not change its visibility to work around access.
+
+After access is available, inspect the remote before pushing. `ls-remote` lists
+branches; `fetch` downloads existing history. If the remote contains an initial
+README or other commits, preserve and reconcile that history before a normal push.
+Do not force-push over existing work.
 
 ```bash
-gh repo create HALO --private --source . --remote origin --push
+git ls-remote origin
+git fetch origin
 ```
 
-Alternatively create an **empty private** HALO repository in your GitHub browser,
-then add that repository's URL as `origin` and push `main` with an authorized account.
-Do not initialize a second README on GitHub if you want a direct first push.
+Once the histories are compatible, this command pushes the local `main` branch
+and configures it to track `origin/main`:
+
+```bash
+git push -u origin main
+```
+
+After publication, follow `docs/LOCAL_VSCODE.md` to clone the project onto the laptop.

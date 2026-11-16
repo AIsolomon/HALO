@@ -10,7 +10,9 @@ is still blocked**, so the original phase acceptance criteria are not all met.
 - [x] Inspect cloud environment, verify official references and available versions.
 - [x] Lock compatible dependencies; install a project virtual environment.
 - [x] Add safe configuration template, contributor instructions, and teaching notes.
-- [ ] Create private GitHub repository and push: connected app denied createRepository.
+- [ ] Push to the user-provided `solbaviangel/HALO` repository: the connected
+      `AIsolomon` account receives 404 from the GitHub API and Git transport.
+- [x] Prepare laptop cloning, VS Code, simulator, test, and API-key instructions.
 - [ ] Configure actual Jira Cloud credentials locally: none are available here.
 
 ## Phase 1 — Connectivity and core Python client

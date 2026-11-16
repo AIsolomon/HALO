@@ -49,10 +49,12 @@ Start reading with `docs/SETUP.md`, then `docs/LEARNING_GUIDE.md` and `docs/MODU
    return, edit `.env` locally, run `halo check`, then follow the one-test-task
    sequence in `SETUP.md`. Never paste tokens into chat. Real Jira project field
    requirements and transitions may need configuration changes after that check.
-2. **GitHub:** the connected GitHub app denied creating private `AIsolomon/HALO`
-   with `Resource not accessible by integration (createRepository)`. No remote
-   exists and nothing was pushed. Grant appropriate creation access or create an
-   empty private HALO repository in your browser; the setup guide gives the push steps.
+2. **GitHub:** the user supplied `https://github.com/solbaviangel/HALO` after
+   creating the repository. The connected account is still `AIsolomon`; both the
+   GitHub connector/API and Git transport return 404 / repository not found.
+   `origin` now points to the requested URL, but nothing has been pushed. Enable
+   access for the intended account and GitHub app, then retry without force-pushing.
+   `docs/LOCAL_VSCODE.md` gives the laptop setup steps after publication.
 
 These are external-access blockers, not failed application tests. They prevent a
 claim that real Jira end-to-end validation or GitHub backup is complete.
