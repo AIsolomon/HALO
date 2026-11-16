@@ -228,6 +228,13 @@ The user created `https://github.com/AIsolomon/HALO` as a public repository and
 explicitly requested publishing the source there. It replaces the earlier
 inaccessible `solbaviangel/HALO` destination. `origin` points to `AIsolomon/HALO`.
 
+The repository is readable, but initial Git push and GitHub connector writes both
+returned 403. Public visibility grants read access; it does not grant the connected
+app write access. In GitHub Settings -> Applications -> Installed GitHub Apps,
+configure the ChatGPT/Codex GitHub app and include HALO in its selected repositories.
+If needed, refresh the GitHub connection in ChatGPT/Codex after that change.
+Once access is available, retry the initial upload with `git push -u origin main`.
+
 For a laptop checkout, follow `docs/LOCAL_VSCODE.md`. After committing future local
 changes, this command pushes your existing `main` branch to its configured remote:
 

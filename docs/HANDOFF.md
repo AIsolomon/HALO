@@ -3,9 +3,9 @@
 The local end-to-end implementation is ready to review in `/workspace/HALO`.
 It includes a reusable Jira client/service, CLI, FastAPI REST adapter, official MCP
 SDK stdio adapter, and a workflow simulator with persistent run IDs and a separate
-human approval step. Application code and dependencies are committed to `main` in
-https://github.com/AIsolomon/HALO. Start with `docs/LOCAL_VSCODE.md` to clone and run
-the project on your laptop.
+human approval step. Application code and dependencies are committed locally on `main`. The target is
+https://github.com/AIsolomon/HALO, but publication is blocked by GitHub app write
+permissions. After publication, use `docs/LOCAL_VSCODE.md` for your laptop.
 
 ## What was verified
 
@@ -57,7 +57,9 @@ may need configuration changes after that check. Live Jira validation remains pe
 
 The earlier `solbaviangel/HALO` destination was inaccessible. The user then created
 public `AIsolomon/HALO` and explicitly authorized publishing there. Its empty remote
-was inspected and the existing project history was published without a force push.
+was inspected. A normal Git push failed with 403, and a GitHub connector blob-write
+also failed with `Resource not accessible by integration`. No source has been
+published. Enable the connected GitHub app for HALO, then retry the normal push.
 `docs/LOCAL_VSCODE.md` uses the current clone URL. Laptop credentials and configuration
 are created locally; no `.env` file is transferred through Git.
 

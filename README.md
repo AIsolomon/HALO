@@ -6,7 +6,9 @@ server, and a small workflow simulator.
 
 **Status:** local end-to-end REST and MCP flows pass against a Jira simulator.
 Real Jira is **not yet verified** because no account credentials are configured.
-Source repository: [AIsolomon/HALO](https://github.com/AIsolomon/HALO).
+Target repository: [AIsolomon/HALO](https://github.com/AIsolomon/HALO).
+Publication is pending: the connected GitHub app can read this public repository
+but both Git push and API writes are denied with HTTP 403.
 See [the handoff](docs/HANDOFF.md) for results and remaining steps.
 
 For your laptop, start with [the VS Code setup guide](docs/LOCAL_VSCODE.md).

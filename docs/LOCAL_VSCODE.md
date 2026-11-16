@@ -1,6 +1,6 @@
 # Load HALO on your laptop in VS Code
 
-Clone the source from:
+After initial publication, clone the source from:
 https://github.com/AIsolomon/HALO
 
 The project currently runs in a cloud workspace. Your laptop receives its own copy

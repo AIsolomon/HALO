@@ -101,3 +101,14 @@ connected account has push permission and the remote was empty when inspected.
 Publish the existing history to `main` with a normal push, update laptop clone
 instructions, and verify the resulting remote commit. Keep live Jira validation
 separate from local test results.
+
+
+## 015 — Publication remains blocked by integration scope
+
+The normal Git push to `AIsolomon/HALO` returned HTTP 403 permission denied. An
+actual README blob write through the GitHub connector also returned 403 with
+`Resource not accessible by integration`. Repository metadata reports the user's
+push permission but does not establish the app's content-write authorization.
+Nothing has been published. Keep the requested origin, retain all local commits,
+and wait for HALO to be included in the connected app's repository access before
+retrying. Public visibility is not write authorization.
