@@ -222,29 +222,19 @@ docker run --rm --env-file .env -p 127.0.0.1:8000:8000 halo-jira:local
 | Port in use | Stop the previous server or use `halo serve --port 8001`. |
 | uv cache read-only in cloud | Use `UV_CACHE_DIR=/workspace/work/uv-cache` as a command prefix. |
 
-## 10. Push to the requested GitHub repository
+## 10. Source control and laptop checkout
 
-The user supplied `https://github.com/solbaviangel/HALO`. The cloud checkout's
-`origin` points there. The connected `AIsolomon` account currently receives 404
-from both the API and Git transport, so no push has succeeded. A private repository
-can be hidden behind this response; verify account/app access instead of assuming
-that the repository is absent. Do not change its visibility to work around access.
+The user created `https://github.com/AIsolomon/HALO` as a public repository and
+explicitly requested publishing the source there. It replaces the earlier
+inaccessible `solbaviangel/HALO` destination. `origin` points to `AIsolomon/HALO`.
 
-After access is available, inspect the remote before pushing. `ls-remote` lists
-branches; `fetch` downloads existing history. If the remote contains an initial
-README or other commits, preserve and reconcile that history before a normal push.
-Do not force-push over existing work.
+For a laptop checkout, follow `docs/LOCAL_VSCODE.md`. After committing future local
+changes, this command pushes your existing `main` branch to its configured remote:
 
 ```bash
-git ls-remote origin
-git fetch origin
+git push origin main
 ```
 
-Once the histories are compatible, this command pushes the local `main` branch
-and configures it to track `origin/main`:
-
-```bash
-git push -u origin main
-```
-
-After publication, follow `docs/LOCAL_VSCODE.md` to clone the project onto the laptop.
+If GitHub rejects a push because the remote has new work, fetch and reconcile it
+before a normal push. Do not force-push over other work. Keep `.env`, local workflow
+state, virtual environments, and generated reports out of Git.

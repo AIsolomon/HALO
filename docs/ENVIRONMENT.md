@@ -13,7 +13,7 @@ provides no information about the user's laptop OS or its sleep/lock configurati
 | VS Code CLI | `code` not found on PATH; Codex workspace is available |
 | Docker daemon | 29.9.2 at managed local socket |
 | Repository | `/workspace/HALO`, branch `main` |
-| GitHub identity | AIsolomon; connected app denied repository creation |
+| GitHub identity | AIsolomon; initial creation denied; user-created AIsolomon/HALO later accessible |
 | Jira configuration | No Jira environment variables or `.env`; no configured cloud secrets |
 
 Python **3.12** is recommended for this project because it is installed, supported

@@ -1,7 +1,7 @@
 # Load HALO on your laptop in VS Code
 
-Use this guide after the source has been pushed to:
-https://github.com/solbaviangel/HALO
+Clone the source from:
+https://github.com/AIsolomon/HALO
 
 The project currently runs in a cloud workspace. Your laptop receives its own copy
 when you clone the repository. Cloud `.venv`, private `.env`, reports, and local
@@ -27,7 +27,7 @@ In VS Code, press **Ctrl+Shift+P** (Mac: **Cmd+Shift+P**), choose **Git: Clone**
 paste the following URL, and select a normal local project folder:
 
 ```text
-https://github.com/solbaviangel/HALO.git
+https://github.com/AIsolomon/HALO.git
 ```
 
 Sign into the GitHub account that has access if prompted, then choose **Open**.
@@ -38,7 +38,7 @@ Alternatively, in a terminal, `git clone` downloads source plus Git history and
 `cd` selects the resulting project folder:
 
 ```bash
-git clone https://github.com/solbaviangel/HALO.git
+git clone https://github.com/AIsolomon/HALO.git
 cd HALO
 ```
 
@@ -137,7 +137,7 @@ enter your generated **HALO_API_KEY**, not the Jira API token. Try the read-only
 ## Troubleshooting
 
 - **Repository not found:** confirm the exact URL and GitHub account access. Cloud
-  publishing is blocked until the account/app can access this repository.
+  access may need to be refreshed if the repository visibility changes.
 - **No pyproject.toml:** open HALO's project root, not its parent folder.
 - **uv not recognized:** reopen the terminal or use `python -m uv` as described above.
 - **Invalid settings:** check `.env` locally; do not paste secret values into chat.

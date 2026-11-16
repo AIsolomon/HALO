@@ -10,8 +10,8 @@ is still blocked**, so the original phase acceptance criteria are not all met.
 - [x] Inspect cloud environment, verify official references and available versions.
 - [x] Lock compatible dependencies; install a project virtual environment.
 - [x] Add safe configuration template, contributor instructions, and teaching notes.
-- [ ] Push to the user-provided `solbaviangel/HALO` repository: the connected
-      `AIsolomon` account receives 404 from the GitHub API and Git transport.
+- [x] Publish to the user-created public `AIsolomon/HALO` repository on `main`,
+      as explicitly requested. The earlier `solbaviangel/HALO` target was inaccessible.
 - [x] Prepare laptop cloning, VS Code, simulator, test, and API-key instructions.
 - [ ] Configure actual Jira Cloud credentials locally: none are available here.
 
@@ -60,7 +60,7 @@ is still blocked**, so the original phase acceptance criteria are not all met.
       timeouts, bounded safe retries, rate-limit handling, and safety tests.
 - [x] Local workflow duplicate protection and failure-state recording.
 - [x] Non-root Docker image build and runtime verification, including container demo.
-- [x] Add CI configuration (not run on GitHub because no remote exists).
+- [x] Add GitHub CI configuration; inspect the Actions run after publishing.
 - [ ] Enterprise OIDC/OAuth, scoped authorization, central vaulting/rotation,
       distributed recovery, tamper-resistant audits, ingress controls, and production review.
 - [ ] Additional Jira features: assignment, links, history, attachments, custom fields.

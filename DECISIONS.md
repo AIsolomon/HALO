@@ -90,3 +90,14 @@ history and visibility. The connected `AIsolomon` account receives 404 from the
 GitHub connector, CLI API, and Git transport. Add the requested origin locally;
 publication remains pending account/app access. Prepare a VS Code guide so the
 user can clone, run the credential-free simulator, and test before configuring Jira.
+
+
+## 014 — Authorized public destination
+
+The user created `https://github.com/AIsolomon/HALO`, made it public, and explicitly
+requested publishing the code there. This replaces the earlier `solbaviangel/HALO`
+destination and supersedes the earlier preference for a private repository. The
+connected account has push permission and the remote was empty when inspected.
+Publish the existing history to `main` with a normal push, update laptop clone
+instructions, and verify the resulting remote commit. Keep live Jira validation
+separate from local test results.

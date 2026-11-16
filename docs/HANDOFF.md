@@ -3,7 +3,9 @@
 The local end-to-end implementation is ready to review in `/workspace/HALO`.
 It includes a reusable Jira client/service, CLI, FastAPI REST adapter, official MCP
 SDK stdio adapter, and a workflow simulator with persistent run IDs and a separate
-human approval step. Application code and dependencies are committed locally.
+human approval step. Application code and dependencies are committed to `main` in
+https://github.com/AIsolomon/HALO. Start with `docs/LOCAL_VSCODE.md` to clone and run
+the project on your laptop.
 
 ## What was verified
 
@@ -23,8 +25,9 @@ human approval step. Application code and dependencies are committed locally.
 - A missing-configuration CLI check exited safely without attempting Jira access.
 
 The simulator generated three fake issues per end-to-end test/demo invocation.
-**No real Jira tickets were created or modified.** CI configuration is provided but
-has not run on GitHub. A successful local test does not establish enterprise readiness.
+**No real Jira tickets were created or modified.** GitHub CI is configured to run
+on pushes and pull requests; inspect the repository's Actions tab for current
+results. A successful local test does not establish enterprise readiness.
 
 ## Run first
 
@@ -43,21 +46,20 @@ Start reading with `docs/SETUP.md`, then `docs/LEARNING_GUIDE.md` and `docs/MODU
 `TASKS.md` distinguishes implemented local behavior from outstanding live validation.
 `docs/SECURITY.md` describes recovery and enterprise work still required.
 
-## Two external blockers
+## Remaining external setup: Jira
 
-1. **Jira:** no site credentials or cloud secret bindings are configured. When you
-   return, edit `.env` locally, run `halo check`, then follow the one-test-task
-   sequence in `SETUP.md`. Never paste tokens into chat. Real Jira project field
-   requirements and transitions may need configuration changes after that check.
-2. **GitHub:** the user supplied `https://github.com/solbaviangel/HALO` after
-   creating the repository. The connected account is still `AIsolomon`; both the
-   GitHub connector/API and Git transport return 404 / repository not found.
-   `origin` now points to the requested URL, but nothing has been pushed. Enable
-   access for the intended account and GitHub app, then retry without force-pushing.
-   `docs/LOCAL_VSCODE.md` gives the laptop setup steps after publication.
+No Jira site credentials or cloud secret bindings are configured. Edit `.env`
+locally, run `halo check`, then follow the one-test-task sequence in `SETUP.md`.
+Never paste tokens into chat. Real Jira project field requirements and transitions
+may need configuration changes after that check. Live Jira validation remains pending.
 
-These are external-access blockers, not failed application tests. They prevent a
-claim that real Jira end-to-end validation or GitHub backup is complete.
+## GitHub publication
+
+The earlier `solbaviangel/HALO` destination was inaccessible. The user then created
+public `AIsolomon/HALO` and explicitly authorized publishing there. Its empty remote
+was inspected and the existing project history was published without a force push.
+`docs/LOCAL_VSCODE.md` uses the current clone URL. Laptop credentials and configuration
+are created locally; no `.env` file is transferred through Git.
 
 ## Laptop and runtime
 
