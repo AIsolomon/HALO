@@ -88,7 +88,7 @@ and MCP transports. It does not contact your real Jira account.
 uv run --frozen pytest -q
 ```
 
-Expected result for this version: **30 passed**. For optional style checks, run:
+Expected result for this version: **32 passed**. For optional style checks, run:
 
 ```bash
 uv run --frozen ruff check .
@@ -145,3 +145,24 @@ enter your generated **HALO_API_KEY**, not the Jira API token. Try the read-only
   demo stops its servers when it finishes; use `halo serve` for Swagger.
 - **HALO returns 401:** Swagger requires the locally generated HALO key.
 - **Jira rejects authentication:** verify the separate Jira email/token and expiry.
+
+
+## Updating after the Windows demo cleanup fix
+
+If a previous run ended with `PermissionError: [WinError 32]` for `servers.log`,
+update from GitHub in the terminal containing this checkout. `git pull` downloads
+the committed fix, and `uv sync` keeps the locked environment in sync. Run the demo
+again after the update:
+
+```powershell
+git pull --ff-only origin main
+uv sync --frozen
+uv run --frozen halo demo
+```
+
+Windows virtual-environment/Conda launchers can leave child interpreters running
+when only the launcher is terminated. The demo now stops its own server process
+trees before closing the log and removing temporary files. This is limited to
+processes started by that demo; it does not stop unrelated Python applications.
+Startup failures also include the simulator log instead of hiding the diagnostic.
+No administrator access or file-permission change is required for this fix.

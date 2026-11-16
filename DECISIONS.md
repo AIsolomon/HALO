@@ -122,3 +122,15 @@ succeeded on 16 November 2026, publishing the existing local commit history to
 the upstream, remove obsolete publication-blocked text from active setup guides,
 and use GitHub Actions plus remote SHA checks to verify the published revision.
 The historical permission failures above are retained as a record, not a current blocker.
+
+
+## 017 — Windows demo process-tree cleanup
+
+The user's Windows run hit WinError 32 while removing the temporary `servers.log`.
+Stopping a venv/Conda launcher alone can leave child interpreters holding inherited
+log handles. Stop the demo's own Windows process trees with the OS `taskkill /T`
+facility and wait for launchers before closing the log and deleting temporary files.
+Keep normal terminate/wait behavior on POSIX. Forward standard Windows runtime/temp
+paths, never unrelated credentials. Preserve startup diagnostics as exception notes.
+Add real failure-path cleanup regressions and run CI on both Windows and Linux;
+do not treat a successful Linux run as Windows verification.

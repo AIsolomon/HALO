@@ -9,7 +9,7 @@ project on your laptop.
 
 ## What was verified
 
-- **30 tests passed**, including actual local HTTP and MCP subprocess connections.
+- **32 tests passed locally**, including actual local HTTP and MCP subprocess connections.
 - Ruff lint and formatting checks passed.
 - `uv sync --locked` and dependency compatibility checks passed.
 - Both workflow routes completed against the local Jira simulator. REST exercised
@@ -21,8 +21,10 @@ project on your laptop.
 - Docker image built with the cloud's certificate mounted as a build secret. Its
   default REST process returned healthy, rejected an unauthenticated operation
   with 401, and ran as UID 10001. The full local demo also passed inside the image
-  with external networking disabled. A final image rebuild includes the latest code.
+  with external networking disabled. Rebuild the image from the current checkout for later source fixes.
 - A missing-configuration CLI check exited safely without attempting Jira access.
+- Windows demo cleanup stops inherited-handle child processes, with regression
+  tests for startup/body failures. GitHub CI now runs on both Windows and Linux.
 
 The simulator generated three fake issues per end-to-end test/demo invocation.
 **No real Jira tickets were created or modified.** GitHub CI is configured to run

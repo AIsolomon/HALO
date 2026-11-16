@@ -156,7 +156,9 @@ permission, required field, workflow, or search behavior.
 `wait_ready` checks process health with a deadline. `run_demo` owns a temporary
 directory and SQLite store. `exercise_rest` uses actual HTTP; `exercise_mcp` uses
 an actual stdio child and the official SDK. Context managers stop processes and
-remove temporary state even on failure. Assertions check results, not merely the
+remove temporary state even on failure. `stop_demo_processes` stops each launched
+server tree on Windows, including venv/Conda child interpreters, before log-file
+cleanup. Startup failures retain a bounded simulator log as an exception note. Assertions check results, not merely the
 absence of exceptions. No real issue is created.
 
 Run `uv run halo demo --report reports/demo.json`. Expect both completed routes

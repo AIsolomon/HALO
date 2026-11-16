@@ -60,7 +60,9 @@ is still blocked**, so the original phase acceptance criteria are not all met.
       timeouts, bounded safe retries, rate-limit handling, and safety tests.
 - [x] Local workflow duplicate protection and failure-state recording.
 - [x] Non-root Docker image build and runtime verification, including container demo.
-- [x] Add GitHub CI configuration; inspect the Actions run after publishing.
+- [x] Add Linux and Windows GitHub CI checks, with real demo subprocess tests.
+- [x] Fix Windows demo process-tree cleanup and retain startup diagnostics; add
+      regression checks for failures during startup and workflow execution.
 - [ ] Enterprise OIDC/OAuth, scoped authorization, central vaulting/rotation,
       distributed recovery, tamper-resistant audits, ingress controls, and production review.
 - [ ] Additional Jira features: assignment, links, history, attachments, custom fields.

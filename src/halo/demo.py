@@ -41,12 +41,58 @@ def wait_ready(url: str, process: subprocess.Popen, auth=None) -> None:
     raise RuntimeError("Timed out waiting for a local demo server")
 
 
+def stop_demo_processes(processes: list[subprocess.Popen]) -> None:
+    """Stop only the server trees started by this demo, then reap their launchers."""
+    for process in reversed(processes):
+        if process.poll() is not None:
+            continue
+        if sys.platform == "win32":
+            # Windows venv/Conda launchers may have child interpreters. Killing only
+            # the launcher leaves those children holding the inherited log handle.
+            taskkill = Path(os.environ.get("SYSTEMROOT", r"C:\Windows")) / "System32/taskkill.exe"
+            subprocess.run(
+                [str(taskkill), "/PID", str(process.pid), "/T", "/F"],
+                check=False,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                timeout=10,
+            )
+        else:
+            try:
+                process.terminate()
+            except ProcessLookupError:
+                pass  # The server exited between the status check and shutdown.
+    for process in reversed(processes):
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=5)
+
+
 @contextmanager
 def demo_environment(directory: Path):
-    jira_url = f"http://127.0.0.1:{free_port()}"
+    jira_port = free_port()
     api_port = free_port()
+    while api_port == jira_port:
+        api_port = free_port()
+    jira_url = f"http://127.0.0.1:{jira_port}"
     api_url = f"http://127.0.0.1:{api_port}"
-    env = {key: os.environ[key] for key in ("PATH", "SYSTEMROOT", "WINDIR") if key in os.environ}
+    # Keep the Windows runtime's normal user/temp paths without passing unrelated
+    # credentials into the simulator processes.
+    inherited = (
+        "PATH",
+        "SYSTEMROOT",
+        "WINDIR",
+        "SYSTEMDRIVE",
+        "TEMP",
+        "TMP",
+        "APPDATA",
+        "LOCALAPPDATA",
+        "USERPROFILE",
+        "PATHEXT",
+    )
+    env = {key: os.environ[key] for key in inherited if key in os.environ}
     env.update(
         {
             "HALO_DEMO": "true",
@@ -59,50 +105,55 @@ def demo_environment(directory: Path):
         }
     )
     processes = []
-    with (directory / "servers.log").open("w") as log:
+    log_path = directory / "servers.log"
+    try:
+        with log_path.open("w", encoding="utf-8") as log:
+            try:
+                for target, port in (
+                    ("halo.demo_jira:create_app", jira_port),
+                    ("halo.api:create_app", api_port),
+                ):
+                    processes.append(
+                        subprocess.Popen(
+                            [
+                                sys.executable,
+                                "-m",
+                                "uvicorn",
+                                target,
+                                "--factory",
+                                "--host",
+                                "127.0.0.1",
+                                "--port",
+                                str(port),
+                                "--log-level",
+                                "warning",
+                                "--no-access-log",
+                            ],
+                            env=env,
+                            cwd=directory,
+                            stdout=log,
+                            stderr=log,
+                        )
+                    )
+                    if len(processes) == 1:
+                        wait_ready(
+                            f"{jira_url}/rest/api/3/myself", processes[-1], (DEMO_EMAIL, DEMO_TOKEN)
+                        )
+                    else:
+                        wait_ready(f"{api_url}/health", processes[-1])
+                yield api_url, env
+            finally:
+                stop_demo_processes(processes)
+    except Exception as exc:
+        # Read diagnostics only after closing the parent's log handle and stopping
+        # the server trees. All children use public simulator settings, never Jira secrets.
         try:
-            for target, port in (
-                ("halo.demo_jira:create_app", int(jira_url.rsplit(":", 1)[1])),
-                ("halo.api:create_app", api_port),
-            ):
-                processes.append(
-                    subprocess.Popen(
-                        [
-                            sys.executable,
-                            "-m",
-                            "uvicorn",
-                            target,
-                            "--factory",
-                            "--host",
-                            "127.0.0.1",
-                            "--port",
-                            str(port),
-                            "--log-level",
-                            "warning",
-                            "--no-access-log",
-                        ],
-                        env=env,
-                        cwd=directory,
-                        stdout=log,
-                        stderr=log,
-                    )
-                )
-                if len(processes) == 1:
-                    wait_ready(
-                        f"{jira_url}/rest/api/3/myself", processes[-1], (DEMO_EMAIL, DEMO_TOKEN)
-                    )
-                else:
-                    wait_ready(f"{api_url}/health", processes[-1])
-            yield api_url, env
-        finally:
-            for process in reversed(processes):
-                process.terminate()
-            for process in reversed(processes):
-                try:
-                    process.wait(timeout=5)
-                except subprocess.TimeoutExpired:
-                    process.kill()
-                    process.wait(timeout=5)
+            log_text = log_path.read_text(encoding="utf-8", errors="replace").strip()
+        except OSError:
+            log_text = ""  # Never mask the actual failure with a diagnostics read error.
+        if log_text:
+            exc.add_note(f"Local demo server log (last 8000 characters):\n{log_text[-8000:]}")
+        raise
 
 
 async def exercise_rest(api_url: str, store: RunStore) -> dict:
